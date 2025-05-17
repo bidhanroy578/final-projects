@@ -7,7 +7,9 @@ const Cover_menu = ({ img, title, description, menu }) => {
         <div className='my-10'>
             <Cover img={img} title={title} description={description} />
             <MenuCategory menu={menu} />
-            <button className='rounded-xl btn btn-outline border-0 border-b-2'>ORDER YOUR FAVOURITE FOOD</button>
+            <div className='text-center'>
+                <button className='rounded-xl btn btn-outline border-0 border-b-2'>ORDER YOUR FAVOURITE FOOD</button>
+            </div>
         </div>
     );
 };
