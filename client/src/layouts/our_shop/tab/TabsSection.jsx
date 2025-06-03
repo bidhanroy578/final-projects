@@ -6,9 +6,15 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 
-const TabSection = () => {
+const TabSection = ({ id }) => {
 
     const [tabIndex, setTabIndex] = useState(0);
+    useState(() => {
+        if (id) {
+            // const number = Number(id);
+            setTabIndex(() => Number(id))
+        };
+    }, [])
 
     const [menu] = useMenu();
     const offered = menu.filter(item => item.category === 'offered');
