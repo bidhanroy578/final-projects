@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import banner from "../../assets/contact/banner.jpg"
 import Cover from "../../components/cover_menu_btn/Cover";
 import TitleAndDes from "../../components/title/TitleAndDes";
@@ -11,7 +10,6 @@ const ContactUs = () => {
 
     return (
         <>
-            <Helmet title='Bistro Boss | Contact Us' />
             <Cover img={banner} title={"Contact us"} description={'Would you like to try a dish?'} />
 
             {/* location part */}

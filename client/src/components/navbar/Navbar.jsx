@@ -30,7 +30,7 @@ const Navbar = () => {
             </div>
             <div className="navbar-end gap-4">
                 <div>cart </div>
-                <div>sign out </div>
+                <div><button className="btn btn-sm">sign in</button> </div>
             </div>
         </div>
     );

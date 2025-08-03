@@ -9,7 +9,6 @@ import dessertCover from '../../assets/menu/dessert-bg.jpeg'
 import pizzaCover from '../../assets/menu/pizza-bg.jpg'
 import saladCover from '../../assets/menu/salad-bg.jpg'
 import soupCover from '../../assets/menu/soup-bg.jpg'
-import { Helmet } from 'react-helmet-async';
 
 const OurMenu = () => {
     const [menu] = useMenu();
@@ -21,7 +20,6 @@ const OurMenu = () => {
 
     return (
         <div>
-            <Helmet title='Bistro Boss | Our Menu' />
             <Cover img={menuCover} title={"our menu"} />
             {/* todays offer  */}
             <TitleAndDes title={"TODAY'S OFFER"} description={"Don't miss"} />
