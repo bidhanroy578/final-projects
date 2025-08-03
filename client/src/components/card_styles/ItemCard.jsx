@@ -1,9 +1,12 @@
+import usePagination from "../../hooks/usePaginatio ";
+import Pagination from "../pagination/Pagination";
 
 const ItemCard = ({ items = [] }) => {
-    return (
+    const { setCurrentPage, setPerPage, perPage, showList } = usePagination(items)
+    return (<>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 my-20">
             {
-                items.map(item => (
+                showList.map(item => (
                     <div key={item._id} className='relative max-w-[430px] mx-auto shadow-[#BB8506] shadow-2xl'>
                         <img loading="lazy" src={item.image} className=' object-cover w-full' alt={item.name} />
                         <p className='bg-black text-white px-4 py-2 absolute right-4 top-4'>${item.price}</p>
@@ -16,6 +19,8 @@ const ItemCard = ({ items = [] }) => {
                 ))
             }
         </div>
+        <Pagination perPage={perPage} totalItem={items.length} setPerPage={setPerPage} setCurrentPage={setCurrentPage} ></Pagination>
+    </>
     );
 };
 
