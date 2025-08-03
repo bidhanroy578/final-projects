@@ -4,6 +4,7 @@ import OurMenu from "../layouts/our_menu/OurMenu";
 import Home from "../layouts/home/Home";
 import Navbar from "../components/navbar/Navbar";
 import OurShop from "../layouts/our_shop/OurShop";
+import ContactUs from "../layouts/contact_us/ContactUs";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
                 path: "/our-shop/:id",
                 element: <OurShop />,
             },
+            {
+                path: "/contact-us",
+                element: <ContactUs />
+            }
 
         ]
     },
