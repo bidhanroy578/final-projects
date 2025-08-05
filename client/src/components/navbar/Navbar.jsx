@@ -1,6 +1,22 @@
 import { NavLink } from "react-router";
 import "./navbar.css"
+import { useContext } from "react";
+import { AuthContext } from "../../context_api/Auth_context";
+import Swal from "sweetalert2";
 const Navbar = () => {
+    const { user, logout } = useContext(AuthContext)
+
+    const handleSignout = () => {
+        logout()
+            .then(res => {
+                console.log(res)
+                Swal.fire({
+                    title: "Sign Out successfull !!!",
+                    icon: "success"
+                });
+            }).catch(err => { alert(err.message) })
+    }
+
     const navItems = <>
         <li><NavLink to='/'>HOME</NavLink></li>
         <li><NavLink to='/contact-us'>CONTACT US</NavLink></li>
@@ -30,7 +46,14 @@ const Navbar = () => {
             </div>
             <div className="navbar-end gap-4">
                 <div>cart </div>
-                <div><button className="btn btn-sm">sign in</button> </div>
+                <div>
+                    {
+                        user ?
+                            <button onClick={handleSignout} className="border border-amber-200 p-2 rounded-full hover:scale-95 active:scale-100 transition-transform">Sign Out</button>
+                            :
+                            <a href="/signin" className="border border-amber-200 p-2 rounded-full hover:scale-95 active:scale-100 transition-transform">Sign In</a>
+                    }
+                </div>
             </div>
         </div>
     );

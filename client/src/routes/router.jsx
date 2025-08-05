@@ -5,6 +5,8 @@ import Home from "../layouts/home/Home";
 import Navbar from "../components/navbar/Navbar";
 import OurShop from "../layouts/our_shop/OurShop";
 import ContactUs from "../layouts/contact_us/ContactUs";
+import Signin from "../layouts/sign_in/Signin";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -30,11 +32,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/contact-us",
-                element: <ContactUs />
-            }
+                element: <PrivateRoute ><ContactUs /></PrivateRoute>
+            },
 
         ]
     },
+    {
+        path: '/signin',
+        element: <Signin />
+    }
 ]);
 
 export default router;

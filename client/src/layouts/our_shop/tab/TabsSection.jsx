@@ -31,6 +31,7 @@ const TabSection = ({ id }) => {
                 <Tab>Soups</Tab>
                 <Tab>Desserts</Tab>
                 <Tab>Offered</Tab>
+                <Tab>All</Tab>
             </TabList>
 
             <TabPanel>
@@ -47,6 +48,9 @@ const TabSection = ({ id }) => {
             </TabPanel>
             <TabPanel>
                 <ItemCard items={offered} />
+            </TabPanel>
+            <TabPanel>
+                <ItemCard items={menu} />
             </TabPanel>
         </Tabs>
     );
