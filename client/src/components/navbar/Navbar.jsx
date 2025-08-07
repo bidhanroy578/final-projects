@@ -3,6 +3,9 @@ import "./navbar.css"
 import { useContext } from "react";
 import { AuthContext } from "../../context_api/Auth_context";
 import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
+
+
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext)
 
@@ -45,7 +48,12 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end gap-4">
-                <div>cart </div>
+                <div className="indicator">
+                    <span className="indicator-item text-[12px] bg-red-600 text-black rounded-full p-[2px]">
+                        12
+                    </span>
+                    <button className="btn bg-transparent indicator rounded-full"><FaShoppingCart className="text-2xl" /></button>
+                </div>
                 <div>
                     {
                         user ?

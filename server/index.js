@@ -2,11 +2,11 @@ import express from "express";
 import cors from "cors";
 import { configDotenv } from "dotenv";
 configDotenv();
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(express.json());
 // Middleware
 app.use(
   cors({
@@ -30,13 +30,36 @@ const client = new MongoClient(uri, {
   },
 });
 
+// into mongodb codes here
+
 async function run() {
   try {
     await client.connect();
     const menuCollection = client.db("bistro_boss_DB").collection("menu");
     const reviewCollection = client.db("bistro_boss_DB").collection("reviews");
+    const cartCollection = client.db("bistro_boss_DB").collection("carts");
 
     // here is the codes
+
+    //add to cart codes
+    app.get("/carts", async (req, res) => {
+      const result = await cartCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/carts", async (req, res) => {
+      const doc = req.body;
+      console.log(doc);
+      const result = await cartCollection.insertOne(doc);
+      console.log(result);
+      res.send(result);
+      // res.errored();
+    });
+
+    app.delete("/carts", async (req, res) => {
+      const query = new ObjectId(req.body);
+      const result = await cartCollection.deleteOne(query);
+    });
 
     // get menu list
     app.get("/menu", async (req, res) => {

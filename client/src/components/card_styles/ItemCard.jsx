@@ -1,8 +1,34 @@
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import usePagination from "../../hooks/usePaginatio ";
 import Pagination from "../pagination/Pagination";
+import useAuthData from "../../hooks/useAuthData";
+import Swal from 'sweetalert2'
 
 const ItemCard = ({ items = [] }) => {
+
+    const axiosSecure = useAxiosSecure()
+    const { user } = useAuthData()
+
     const { setCurrentPage, setPerPage, perPage, showList } = usePagination(items)
+
+    const handleAddToCart = (id) => {
+        console.log('add to cart button clicked ')
+        console.log(user.email, id)
+        axiosSecure.post('/carts', {
+            id, email: user.email
+        }).then(res => {
+            console.log(res.data)
+            if (res.data.insertedId) {
+                Swal.fire({
+                    title: 'Item added to cart successful',
+                    icon: "success",
+                });
+
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     return (<>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 my-20">
             {
@@ -13,7 +39,7 @@ const ItemCard = ({ items = [] }) => {
                         <div className=" space-y-5 text-center p-4">
                             <h2 className='text-xl'>{item.name}</h2>
                             <p className="text-start">{item.recipe}</p>
-                            <button className="btn btn-soft text-[#BB8506] border-b-[#BB8506] border-b-2">ADD TO CART</button>
+                            <button onClick={() => handleAddToCart(item._id)} className="btn btn-soft text-[#BB8506] border-b-[#BB8506] border-b-2">ADD TO CART</button>
                         </div>
                     </div>
                 ))
