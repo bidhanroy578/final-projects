@@ -4,10 +4,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../context_api/Auth_context";
 import Swal from "sweetalert2";
 import { FaShoppingCart } from "react-icons/fa";
+import useCart from "../../hooks/useCart";
 
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext)
+    const { cart } = useCart()
 
     const handleSignout = () => {
         logout()
@@ -50,7 +52,7 @@ const Navbar = () => {
             <div className="navbar-end gap-4">
                 <div className="indicator">
                     <span className="indicator-item text-[12px] bg-red-600 text-black rounded-full p-[2px]">
-                        12
+                        {cart.length}
                     </span>
                     <button className="btn bg-transparent indicator rounded-full"><FaShoppingCart className="text-2xl" /></button>
                 </div>

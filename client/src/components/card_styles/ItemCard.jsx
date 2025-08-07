@@ -3,11 +3,13 @@ import usePagination from "../../hooks/usePaginatio ";
 import Pagination from "../pagination/Pagination";
 import useAuthData from "../../hooks/useAuthData";
 import Swal from 'sweetalert2'
+import useCart from "../../hooks/useCart";
 
 const ItemCard = ({ items = [] }) => {
 
     const axiosSecure = useAxiosSecure()
     const { user } = useAuthData()
+    const { refetch } = useCart()
 
     const { setCurrentPage, setPerPage, perPage, showList } = usePagination(items)
 
@@ -23,7 +25,8 @@ const ItemCard = ({ items = [] }) => {
                     title: 'Item added to cart successful',
                     icon: "success",
                 });
-
+                //reload the cart after successfully added the item
+                refetch()
             }
         }).catch(err => {
             console.log(err)
