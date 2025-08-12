@@ -7,6 +7,7 @@ import OurShop from "../layouts/our_shop/OurShop";
 import ContactUs from "../layouts/contact_us/ContactUs";
 import Signin from "../layouts/sign_in/Signin";
 import PrivateRoute from "./PrivateRoute";
+import DashRoot from "../layouts/dashboard/DashRoot";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
     {
         path: '/signin',
         element: <Signin />
+    },
+    {
+        path: '/dashboard',
+        element: <DashRoot />
     }
 ]);
 

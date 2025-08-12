@@ -54,7 +54,7 @@ const Navbar = () => {
                     <span className="indicator-item text-[12px] bg-red-600 text-black rounded-full p-[2px]">
                         {cart.length}
                     </span>
-                    <button className="btn bg-transparent indicator rounded-full"><FaShoppingCart className="text-2xl" /></button>
+                    <a href="/dashboard" className="btn bg-transparent indicator rounded-full"><FaShoppingCart className="text-2xl" /></a>
                 </div>
                 <div>
                     {
