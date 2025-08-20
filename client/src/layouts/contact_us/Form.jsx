@@ -29,7 +29,7 @@ const Form = () => {
 
                 {/* captcha here  */}
                 <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
-                <div class="g-recaptcha" data-sitekey="6LdpOpkrAAAAAD5EIGH9iz7hZODdEOfQOWC1Mmwe" data-action="LOGIN"></div>
+                <div className="g-recaptcha" data-sitekey="6LdpOpkrAAAAAD5EIGH9iz7hZODdEOfQOWC1Mmwe" data-action="LOGIN"></div>
 
                 <button className="btn  bg-[#9f712b] w-full max-w-80 m-auto">Send Message <FaTelegramPlane /></button>
             </fieldset>

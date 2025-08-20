@@ -5,9 +5,12 @@ import Home from "../layouts/home/Home";
 import Navbar from "../components/navbar/Navbar";
 import OurShop from "../layouts/our_shop/OurShop";
 import ContactUs from "../layouts/contact_us/ContactUs";
-import Signin from "../layouts/sign_in/Signin";
+import Authenticate from '../layouts/authenticate/Authenticate'
 import PrivateRoute from "./PrivateRoute";
 import DashRoot from "../layouts/dashboard/DashRoot";
+import MyCart from "../layouts/dashboard/user_dashboard/my_cart/MyCart";
+import Signin from "../layouts/authenticate/Signin";
+import Signup from "../layouts/authenticate/Signup";
 
 const router = createBrowserRouter([
     {
@@ -39,12 +42,28 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: '/signin',
-        element: <Signin />
+        path: '/authenticate',
+        element: <Authenticate />,
+        children: [
+            {
+                path: '/authenticate/signin',
+                element: <Signin />
+            },
+            {
+                path: '/authenticate/signup',
+                element: <Signup />
+            }
+        ]
     },
     {
         path: '/dashboard',
-        element: <DashRoot />
+        element: <DashRoot />,
+        children: [
+            {
+                path: '/dashboard/user/my_cart',
+                element: <MyCart />
+            }
+        ]
     }
 ]);
 

@@ -7,7 +7,7 @@ const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext)
     console.log(location.pathname)
     if (!user) {
-        return <Navigate to={'/signin'} state={location.pathname} replace />
+        return <Navigate to={'/authenticate/signin'} state={location.pathname} replace />
     }
     return children;
 };
