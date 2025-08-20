@@ -36,14 +36,30 @@ async function run() {
   try {
     await client.connect();
     const menuCollection = client.db("bistro_boss_DB").collection("menu");
+    const usersCollection = client.db("bistro_boss_DB").collection("users");
     const reviewCollection = client.db("bistro_boss_DB").collection("reviews");
     const cartCollection = client.db("bistro_boss_DB").collection("carts");
 
     // here is the codes
 
+    // user collection for managing user roles
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+      // console.log(user, query);
+      const isEsisting = await usersCollection.findOne(query);
+      if (isEsisting) {
+        res.send({ message: "user already exists", insertedId: null });
+      }
+      const result = await usersCollection.insertOne(user);
+      result.message = "new user added to list";
+      res.send(result);
+    });
+
     //add to cart codes
     app.get("/carts", async (req, res) => {
-      const result = await cartCollection.find().toArray();
+      const query = { email: req.query.email };
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
@@ -57,8 +73,11 @@ async function run() {
     });
 
     app.delete("/carts", async (req, res) => {
-      const query = new ObjectId(req.body);
+      const query = { _id: new ObjectId(req.body) };
+      // const id = req.body;
+      // console.log(id);
       const result = await cartCollection.deleteOne(query);
+      res.send(result);
     });
 
     // get menu list
