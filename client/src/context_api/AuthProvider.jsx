@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
             }
         })
         return () => unsubscribe()
-    }, [])
+    }, [axiosPublic])
 
     const datas = { user, loading, emailSignin, emailSignup, googleSignin, logout, updateUser }
 
