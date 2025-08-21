@@ -3,11 +3,13 @@ import cors from "cors";
 import { configDotenv } from "dotenv";
 configDotenv();
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
+import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
-// Middleware
+
+// Middlewares
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -15,6 +17,7 @@ app.use(
   })
 );
 
+//listeners responders
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
@@ -35,6 +38,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+
+    //db collections
+
     const menuCollection = client.db("bistro_boss_DB").collection("menu");
     const usersCollection = client.db("bistro_boss_DB").collection("users");
     const reviewCollection = client.db("bistro_boss_DB").collection("reviews");
@@ -42,17 +48,93 @@ async function run() {
 
     // here is the codes
 
-    // user collection for managing user roles
+    //jwt related
+
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.Secret, { expiresIn: "1h" });
+      res.send({ token });
+    });
+
+    // middlewares
+
+    const verifyToken = async (req, res, next) => {
+      if (!req.headers.authentication)
+        return res.status(401).send({ message: "unauthorized access" });
+      const token = req.headers.authentication.split(" ")[1];
+      if (!token)
+        return res.status(401).send({ message: "unauthorized access" });
+      // console.log("token in the middleware verify token ", token);
+      jwt.verify(token, process.env.Secret, (err, decode) => {
+        if (err) {
+          console.log("token verify failed.");
+          return res.status(401).send({ message: "unauthorized access" });
+        }
+        if (decode) {
+          req.decoded = decode.email;
+          console.log("token verified successfully");
+          next();
+        }
+      });
+    };
+
+    const verifyAdmin = async (req, res, next) => {
+      const query = { email: req.decoded };
+      const result = await usersCollection.findOne(query);
+      let isAdmin = result?.role === "admin";
+      if (!isAdmin)
+        return res.status(403).send({ message: "forbidden access" });
+      next();
+    };
+
+    // get all users list
+    app.get("/users", verifyToken, verifyAdmin, async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
+    //check if the user is admin or not
+    app.get("/users/admin/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      if (req.decoded !== email)
+        return res.status(403).send({ message: "forbidden access" });
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
+      let isAdmin = result.role === "admin";
+      res.send({ isAdmin });
+    });
+
+    //users collection for managing user roles
     app.post("/users", async (req, res) => {
       const user = req.body;
       const query = { email: user.email };
       // console.log(user, query);
       const isEsisting = await usersCollection.findOne(query);
       if (isEsisting) {
-        res.send({ message: "user already exists", insertedId: null });
+        return res.send({ message: "user already exists", insertedId: null });
       }
       const result = await usersCollection.insertOne(user);
       result.message = "new user added to list";
+      res.send(result);
+    });
+
+    //changing users role
+    app.patch("/users/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updoc = {
+        $set: {
+          role: req.body.role,
+        },
+      };
+      const result = await usersCollection.updateOne(filter, updoc);
+      res.send(result);
+    });
+
+    app.delete("/users/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
 

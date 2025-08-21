@@ -11,6 +11,7 @@ import DashRoot from "../layouts/dashboard/DashRoot";
 import MyCart from "../layouts/dashboard/user_dashboard/my_cart/MyCart";
 import Signin from "../layouts/authenticate/Signin";
 import Signup from "../layouts/authenticate/Signup";
+import AllUsers from "../layouts/dashboard/admin_dashboard/all_users/AllUsers";
 
 const router = createBrowserRouter([
     {
@@ -57,11 +58,17 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashRoot />,
+        element: <PrivateRoute ><DashRoot /></PrivateRoute>,
         children: [
             {
                 path: '/dashboard/user/my_cart',
                 element: <MyCart />
+            },
+
+            //admin routes 
+            {
+                path: '/dashboard/admin/users',
+                element: <AllUsers />
             }
         ]
     }

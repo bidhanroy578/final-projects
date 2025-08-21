@@ -3,18 +3,21 @@ import { FaBook, FaCalendarAlt, FaHome, FaListUl, FaStar, FaUsers, FaWallet } fr
 import { FiMenu } from 'react-icons/fi';
 import { FaCalendarDay, FaCartFlatbed, FaShop } from 'react-icons/fa6';
 import { ImSpoonKnife } from "react-icons/im";
+import useAdmin from '../../hooks/useAdmin';
 
 const DashRoot = () => {
 
     // to do: request with role specified as 'user' or 'admin'
-    const isAdmin = true
+    const [isAdmin, isLoading] = useAdmin()
+    // const isAdmin = true
+    if (isLoading) return <div>loading isAdmin</div>
 
     const admin_sidebar = <>
         <NavLink to='/dash_home' className='btn btn-sm w-full'> <FaHome />Admin Home</NavLink>
         <NavLink to='/dashboard/add-items' className='btn btn-sm w-full'> <ImSpoonKnife />Add Items</NavLink>
         <NavLink to='/dashboard/manage-items' className='btn btn-sm w-full'> <FaListUl />Manage Items</NavLink>
         <NavLink to='#' className='btn btn-sm w-full'> <FaBook />Manage Bookings</NavLink>
-        <NavLink to='#' className='btn btn-sm w-full'> <FaUsers />All Users</NavLink>
+        <NavLink to='/dashboard/admin/users' className='btn btn-sm w-full'> <FaUsers />All Users</NavLink>
     </>
     const user_sidebar = <>
         <NavLink to='/dash_home' className='btn btn-sm w-full'> <FaHome />User Home</NavLink>

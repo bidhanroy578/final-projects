@@ -4,12 +4,14 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AiFillGoogleCircle } from 'react-icons/ai';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Signin = () => {
 
     const { googleSignin, emailSignin } = useAuthData()
     const [disableSubmitButton, setDisableSubmitButton] = useState(true)
     const [tried, setTried] = useState(false)
+    const axiosPublic = useAxiosPublic()
     const navigate = useNavigate()
     const location = useLocation()
     console.log(location)
@@ -43,6 +45,12 @@ const Signin = () => {
     const handleGoogleSignin = () => {
         googleSignin()
             .then((data) => {
+                const user = { name: data?.user?.displayName, email: data?.user?.email }
+                axiosPublic.post('/users', user)
+                    .then(res => {
+                        console.log('google signin/signup', res.data)
+                    })
+
                 console.log(data)
                 Swal.fire({
                     icon: "success",

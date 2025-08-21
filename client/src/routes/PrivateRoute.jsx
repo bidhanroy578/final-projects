@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import { AuthContext } from '../context_api/Auth_context';
+import useAuthData from '../hooks/useAuthData';
 
 const PrivateRoute = ({ children }) => {
     const location = useLocation()
-    const { user } = useContext(AuthContext)
+    const { user, loading } = useAuthData()
     console.log(location.pathname)
+    if (loading) return <div>loading</div>
     if (!user) {
         return <Navigate to={'/authenticate/signin'} state={location.pathname} replace />
     }
