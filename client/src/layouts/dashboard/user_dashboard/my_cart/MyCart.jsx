@@ -5,6 +5,7 @@ import Pagination from '../../../../components/pagination/Pagination';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import usePagination from '../../../../hooks/usePaginatio ';
+import { Link } from 'react-router';
 
 const MyCart = () => {
     //to do : total orders numbers 
@@ -12,7 +13,8 @@ const MyCart = () => {
     const axiosSecure = useAxiosSecure()
     // console.log(cart)
     const { setCurrentPage, setPerPage, perPage, showList } = usePagination(cart);
-    const totalPrice = cart.reduce((prev, curr) => prev + curr.price, 0);
+    let totalPrice = cart.reduce((prev, curr) => Number(prev) + Number(curr.price), 0);
+
 
     const handleDelete = (id) => {
         // console.log(id)
@@ -54,8 +56,14 @@ const MyCart = () => {
             <div className='w-[80%] mx-auto p-10 bg-white dark:bg-[#232323] rounded-xl'>
                 <div className='flex justify-between m-5'>
                     <h3>Total Orders: {cart.length}</h3>
-                    <h3>Total Price: $ {totalPrice.toFixed(2)}</h3>
-                    <button className='btn bg-[#d1a054]'>Pay</button>
+                    <h3>Total Price: $ {totalPrice}</h3>
+                    {
+                        totalPrice ?
+                            <Link to='/dashboard/payment'><button className='btn bg-[#d1a054]'>Pay</button></Link>
+                            :
+                            <button disabled className='btn btn-ghost outline'>Pay</button>
+
+                    }
                 </div>
 
                 {/* <div className="overflow-x-auto"> */}

@@ -14,8 +14,8 @@ const DashRoot = () => {
 
     const admin_sidebar = <>
         <NavLink to='/dash_home' className='btn btn-sm w-full'> <FaHome />Admin Home</NavLink>
-        <NavLink to='/dashboard/add-items' className='btn btn-sm w-full'> <ImSpoonKnife />Add Items</NavLink>
-        <NavLink to='/dashboard/manage-items' className='btn btn-sm w-full'> <FaListUl />Manage Items</NavLink>
+        <NavLink to='/dashboard/admin/add-items' className='btn btn-sm w-full'> <ImSpoonKnife />Add Items</NavLink>
+        <NavLink to='/dashboard/admin/manage-items' className='btn btn-sm w-full'> <FaListUl />Manage Items</NavLink>
         <NavLink to='#' className='btn btn-sm w-full'> <FaBook />Manage Bookings</NavLink>
         <NavLink to='/dashboard/admin/users' className='btn btn-sm w-full'> <FaUsers />All Users</NavLink>
     </>

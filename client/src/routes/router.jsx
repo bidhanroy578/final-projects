@@ -12,6 +12,10 @@ import MyCart from "../layouts/dashboard/user_dashboard/my_cart/MyCart";
 import Signin from "../layouts/authenticate/Signin";
 import Signup from "../layouts/authenticate/Signup";
 import AllUsers from "../layouts/dashboard/admin_dashboard/all_users/AllUsers";
+import AddItems from "../layouts/dashboard/admin_dashboard/add_items/AddItems.jsx";
+import ManageItems from "../layouts/dashboard/admin_dashboard/manage_items/ManageItems.jsx";
+import UpdateItem from "../layouts/dashboard/admin_dashboard/manage_items/UpdateItem.jsx";
+import Payment from "../layouts/dashboard/payment/Payment.jsx";
 
 const router = createBrowserRouter([
     {
@@ -64,11 +68,28 @@ const router = createBrowserRouter([
                 path: '/dashboard/user/my_cart',
                 element: <MyCart />
             },
+            {
+                path: 'payment',
+                element: <Payment />
+            },
 
             //admin routes 
             {
                 path: '/dashboard/admin/users',
                 element: <AllUsers />
+            },
+            {
+                path: '/dashboard/admin/add-items',
+                element: <AddItems />
+            },
+            {
+                path: '/dashboard/admin/manage-items',
+                element: <ManageItems />
+            },
+            {
+                path: '/dashboard/admin/update-item/:id',
+                element: <UpdateItem />,
+                loader: async ({ params }) => fetch(`http://localhost:3000/menu/${params.id}`)
             }
         ]
     }

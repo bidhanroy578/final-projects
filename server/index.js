@@ -1,9 +1,12 @@
-import express from "express";
+import express, { response } from "express";
 import cors from "cors";
 import { configDotenv } from "dotenv";
 configDotenv();
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 import jwt from "jsonwebtoken";
+// const stripe = require("stripe")(process.env.payment_strip_key);
+import Stripe from "stripe";
+const stripe = Stripe(process.env.payment_strip_key);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -162,10 +165,65 @@ async function run() {
       res.send(result);
     });
 
+    //payment intent here
+    const countAmount = async (req, res, next) => {
+      const price = req.body.totalPrice;
+      const amount = Math.round(price * 100);
+      req.body.amount = amount;
+      next();
+    };
+    app.post("/payment-intent", countAmount, async (req, res) => {
+      const amount = req.body.amount;
+      console.log(amount, req.body);
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: "usd",
+      });
+      res.send({ clientSecret: paymentIntent.client_secret });
+    });
+
     // get menu list
     app.get("/menu", async (req, res) => {
-      const data = await menuCollection.find().toArray();
-      res.send(data);
+      const result = await menuCollection.find().toArray();
+      res.send(result);
+    });
+
+    //get one menu item from the entire list
+    app.get("/menu/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const result = await menuCollection.findOne(query);
+      res.send(result);
+    });
+
+    //post/add an new menu item
+    app.post("/menu", verifyToken, verifyAdmin, async (req, res) => {
+      const doc = req.body;
+      const result = await menuCollection.insertOne(doc);
+      res.send(result);
+    });
+
+    //patch/update an menu item
+    app.patch("/menu/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const updoc = {
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+          img: req.body.img,
+          category: req.body.category,
+          recipe: req.body.recipe,
+        },
+      };
+      const result = await menuCollection.updateOne(query, updoc);
+      res.send(result);
+    });
+
+    //delete an menu item
+    app.delete("/menu/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await menuCollection.deleteOne(query);
+      res.send(result);
     });
 
     // get review list
