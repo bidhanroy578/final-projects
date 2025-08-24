@@ -3,7 +3,7 @@ import useAuthData from './useAuthData';
 import { useNavigate } from 'react-router';
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://bistro-boss-restaurant-one.vercel.app'
 })
 const useAxiosSecure = () => {
 

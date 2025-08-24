@@ -51,7 +51,7 @@ const CheckoutForm = () => {
             setStripeError('')
             setPayLoading(false)
         }
-        const res = await stripe.confirmCardPayment(clientSecret, {
+        const { paymentIntent, error: paymentError } = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: card,
                 billing_details: {
@@ -60,9 +60,9 @@ const CheckoutForm = () => {
                 }
             }
         })
-        console.log(res)
+
         setPayLoading(false)
-        if (res.paymentIntent.status === 'succeeded') {
+        if (paymentIntent.status === 'succeeded') {
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -70,6 +70,21 @@ const CheckoutForm = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
+            console.log(paymentIntent)
+            const menuId = {}
+            const cartId = cart.map(item => item._id)
+            const paymentInfo = {
+                payId: paymentIntent.id,
+                name: user?.displayName,
+                email: user?.email,
+                totalPrice,
+                currency: paymentIntent.currency,
+                cartId,
+                menuId,
+
+            }
+            //todo: save the payment info and order list to history list , delete the cart and update list 
+            // axiosSecure.post('/payment', paymentInfo)
             navigate('/')
         }
     }

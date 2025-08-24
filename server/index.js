@@ -43,11 +43,13 @@ async function run() {
     await client.connect();
 
     //db collections
-
     const menuCollection = client.db("bistro_boss_DB").collection("menu");
     const usersCollection = client.db("bistro_boss_DB").collection("users");
     const reviewCollection = client.db("bistro_boss_DB").collection("reviews");
     const cartCollection = client.db("bistro_boss_DB").collection("carts");
+    const paymentCollection = client
+      .db("bistro_boss_DB")
+      .collection("payments");
 
     // here is the codes
 
@@ -165,13 +167,15 @@ async function run() {
       res.send(result);
     });
 
-    //payment intent here
+    //count amount middleware
     const countAmount = async (req, res, next) => {
       const price = req.body.totalPrice;
       const amount = Math.round(price * 100);
       req.body.amount = amount;
       next();
     };
+
+    // payment intent
     app.post("/payment-intent", countAmount, async (req, res) => {
       const amount = req.body.amount;
       console.log(amount, req.body);
@@ -180,6 +184,14 @@ async function run() {
         currency: "usd",
       });
       res.send({ clientSecret: paymentIntent.client_secret });
+    });
+
+    // save payment history
+    app.post("/payment", async (req, res) => {
+      // insert payment info
+      const paymentInfo = req.body;
+      const paymentResult = await paymentCollection.insertOne(paymentInfo);
+      // delete cart info and insert to order history
     });
 
     // get menu list

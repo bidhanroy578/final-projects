@@ -16,6 +16,7 @@ import AddItems from "../layouts/dashboard/admin_dashboard/add_items/AddItems.js
 import ManageItems from "../layouts/dashboard/admin_dashboard/manage_items/ManageItems.jsx";
 import UpdateItem from "../layouts/dashboard/admin_dashboard/manage_items/UpdateItem.jsx";
 import Payment from "../layouts/dashboard/payment/Payment.jsx";
+import PaymentHistory from "../layouts/dashboard/user_dashboard/payment_history/PaymentHistory.jsx";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
                 path: 'payment',
                 element: <Payment />
             },
+            {
+                path: 'payment-history',
+                element: < PaymentHistory />
+            },
 
             //admin routes 
             {
@@ -89,7 +94,7 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/admin/update-item/:id',
                 element: <UpdateItem />,
-                loader: async ({ params }) => fetch(`http://localhost:3000/menu/${params.id}`)
+                loader: async ({ params }) => fetch(`https://bistro-boss-restaurant-one.vercel.app/menu/${params.id}`)
             }
         ]
     }

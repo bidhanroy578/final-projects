@@ -17,8 +17,10 @@ const ItemCard = ({ items = [] }) => {
     const { setCurrentPage, setPerPage, perPage, showList } = usePagination(items)
 
     const handleAddToCart = (id, image, name, price) => {
-        console.log('add to cart button clicked ')
-        console.log(user?.email, id, user)
+        // console.log('add to cart button clicked ')
+        // console.log(user?.email, id, user)
+
+        //if no user then prompt for signin 
         if (!user) {
             Swal.fire({
                 title: "No Account Found",
@@ -34,6 +36,7 @@ const ItemCard = ({ items = [] }) => {
                 }
             });
         }
+        //if no email found again prompt to add or signin
         if (!user?.email) {
             Swal.fire({
                 title: "No Email Found",
@@ -49,9 +52,10 @@ const ItemCard = ({ items = [] }) => {
                 }
             });
         }
+        // if email found , add the item to cart database collection
         if (user?.email) {
             axiosSecure.post('/carts', {
-                id, image, name, price, email: user.email
+                menuId: id, image, name, price, email: user.email
             }).then(res => {
                 console.log(res.data)
                 if (res.data.insertedId) {
